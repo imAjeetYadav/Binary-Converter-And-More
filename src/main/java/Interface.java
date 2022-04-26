@@ -20,6 +20,7 @@ public class Interface
                 break;
             }
             // Number Conversion
+            // TODO
             else if (input.equalsIgnoreCase("CONVERT"))
             {
                 // Values to be used later
@@ -42,11 +43,13 @@ public class Interface
                 }
             }
             // Assembly Related Command
+            // TODO
             else if (input.equalsIgnoreCase("ASSEMBLY"))
             {
                 continue;
             }
-            // Load older input
+            // Load input history
+            // TODO
             else if (input.equalsIgnoreCase("LOAD"))
             {
                 continue;

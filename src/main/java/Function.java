@@ -56,7 +56,7 @@ public class Function
                 return false; // Value at index is not number or hex letter
             }
         }
-        return true; // All characters passed
+        return value.length()>0; // All characters passed
     }
 
     // Check if the binary value is valid
@@ -89,6 +89,7 @@ public class Function
     }
 
     //? Convert from decimal to binary
+    // TODO
     public static String DecimalToBinary(String value)
     {
         // If the value is 0 return nothing
@@ -171,6 +172,7 @@ public class Function
     }
 
     //? Convert from hex to decimal
+    // TODO
     public static String HexToDecimal(String value)
     {
         // Add the value of each binary digit
@@ -197,6 +199,7 @@ public class Function
     }
 
     //? Convert from binary to decimal
+    // TODO
     public static String BinaryToDecimal(String value)
     {
         // If the value is nothing not zero
@@ -220,6 +223,7 @@ public class Function
     }
 
     //? Convert from binary to hex
+    // TODO
     public static String BinaryToHex(String value)
     {
         // If the length is 4 it can be converted directly from binary
@@ -251,12 +255,10 @@ public class Function
         return BinaryToDecimal(value);
     }
 
-    //* Convert Value to all other types and make Number object
-    public static void convertNumber(String value, Number.Type valueType) {}
-
     // Get the number base type
     // Valid Type also checks if the 
     // Value is in the right base
+    // TODO
     public static Number.Type validType(String value, String valueType)
     {
         // If the value type is Decimal (10)
@@ -295,4 +297,6 @@ public class Function
         // Else raise a error
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
+
+    public static void convertNumber(String value, Number.Type valueType) {}
 }
