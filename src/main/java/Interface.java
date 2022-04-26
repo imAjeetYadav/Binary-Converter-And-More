@@ -12,15 +12,6 @@ public class Interface
         {
             String input = scanner.nextLine();
 
-            // Add keys and values to HashMap
-            Function.hashAdd("A", 10);
-            Function.hashAdd("B", 11);
-            Function.hashAdd("C", 12);
-            Function.hashAdd("D", 13);
-            Function.hashAdd("E", 14);
-            Function.hashAdd("F", 15);
-            // Test
-
             // End Program
             if (input.equalsIgnoreCase("QUIT"))
             {

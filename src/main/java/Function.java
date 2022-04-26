@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.lang.Math;
+import java.util.Map;
 
 public class Function 
 {
@@ -8,8 +9,15 @@ public class Function
     private ArrayList<Number> history = new ArrayList<Number>();
 
     // HashMap to store all possible values of letters in a Hex number
-    private static HashMap<String, Integer> hexValues = new HashMap<String, Integer>();
-    // private static HashMap<Integer, Character> hexValuesReverse = new HashMap<Integer, Character>();
+    // private static final HashMap<String, Integer> hexValues = new HashMap<String, Integer>();
+    private static final Map<String, Integer> hexValues = Map.of(
+            "A",10,
+            "B",11,
+            "C",12,
+            "D",13,
+            "E",14,
+            "F",15
+    );
 
     // Error Message
     private static String errMsg = null;
@@ -18,12 +26,6 @@ public class Function
     public static String getError()
     {
         return errMsg;
-    }
-
-    // Add Key and Value to HashMap
-    public static void hashAdd(String key, Integer value)
-    {
-        hexValues.put(key, value);
     }
 
     // Set current error message
@@ -102,7 +104,7 @@ public class Function
     }
 
     //? Convert from decimal to binary
-    private static String DecimalToBinary(String value)
+    public static String DecimalToBinary(String value)
     {
         // If the value is 0 return nothing
         if (value.length() == 0 || Integer.parseInt(value) == 0)
@@ -271,7 +273,7 @@ public class Function
         System.out.println("Decimal To Binary: " + DecimalToBinary(value));
         System.out.println("Decimal To Binary To Hex: " + BinaryToHex(DecimalToBinary(value)));
         System.out.println("Decimal To Binary To Hex To Binary: " + HexToBinary(BinaryToHex(DecimalToBinary(value))));
-        // System.out.println("Decimal To Bianry To Hex To Binary To Decimal: " + BinaryToDecimal(HexToBinary(BinaryToHex(DecimalToBinary(value)))));
+        // System.out.println("Decimal To Binary To Hex To Binary To Decimal: " + BinaryToDecimal(HexToBinary(BinaryToHex(DecimalToBinary(value)))));
     }
 
     // Get the number base type
