@@ -1,5 +1,5 @@
 
-abstract class Number 
+public class Number
 {
     // Type of Numbers
     public static enum Type {DECIMAL, HEX, BINARY}
@@ -7,12 +7,19 @@ abstract class Number
     private String binValue;
     private String decValue;
     private String hexValue;
+    private Type valueType;
 
-    public Number(String binValue, String decValue, String hexValue)
+    public Number(String value, Type valueType)
     {
-        this.binValue = binValue;
-        this.decValue = decValue;
-        this.hexValue = hexValue;
+        this.valueType = valueType;
+
+        if (valueType.equals(Type.DECIMAL)) {
+            decValue = value;
+        } else if (valueType.equals(Type.HEX)) {
+            hexValue = value;
+        } else if (valueType.equals(Type.BINARY)){
+            binValue = value;
+        }
     }
     
     // Get the value of the number
@@ -49,6 +56,16 @@ abstract class Number
     public void setHexValue(String value)
     {
         this.hexValue = value;
+    }
+
+    // Get the base of the number
+    public Type getBase() {
+        return this.valueType;
+    }
+
+    // Set the base of the number
+    public void setBase(Type valueType) {
+        this.valueType = valueType;
     }
 
     // To String Method

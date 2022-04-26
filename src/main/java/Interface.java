@@ -23,8 +23,8 @@ public class Interface
             else if (input.equalsIgnoreCase("CONVERT"))
             {
                 // Values to be used later
-                Number.Type valueType; // Removed null
-                String value;          // Removed null
+                String value;
+                String base;
 
                 // Get the value of the number
                 System.out.println("\nWhat is the value?");
@@ -33,17 +33,12 @@ public class Interface
                 // Get the value type as a string and convert it to Type
                 // validType also checks if value is in valueType
                 System.out.println("\nWhat is the base of value?");
-                valueType = Function.validType(value, scanner.nextLine());
+                base = scanner.nextLine();
 
-                // If the type exists else error happened
-                if (valueType != null)
-                {
-                    System.out.println("Made it!");
-                    Function.convertNumber(value, null);
-                }
-                else
-                {
-                    System.out.println(Function.getError());
+                try {
+                    Function.convertNumber(value, Function.validType(value,base));
+                } catch (Exception error) {
+                    System.out.println(error.getMessage());
                 }
             }
             // Assembly Related Command

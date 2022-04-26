@@ -7,7 +7,7 @@ class FunctionTest {
 
     @Test
     public void convertDecimalToBinary() {
-        Assertions.assertEquals(Function.DecimalToBinary(""+25),"11001");
+        Assertions.assertEquals(Function.DecimalToBinary("25"),"11001");
     }
 
     @Test

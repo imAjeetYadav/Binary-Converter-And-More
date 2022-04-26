@@ -6,7 +6,7 @@ import java.util.Map;
 public class Function 
 {
     // Array List to store history of numbers
-    private ArrayList<Number> history = new ArrayList<Number>();
+    private final ArrayList<Number> history = new ArrayList<Number>();
 
     // HashMap to store all possible values of letters in a Hex number
     // private static final HashMap<String, Integer> hexValues = new HashMap<String, Integer>();
@@ -18,21 +18,6 @@ public class Function
             "E",14,
             "F",15
     );
-
-    // Error Message
-    private static String errMsg = null;
-
-    // Return current error message
-    public static String getError()
-    {
-        return errMsg;
-    }
-
-    // Set current error message
-    private static void setError(String error)
-    {   
-        errMsg = error;
-    }
 
     // Check if the decimal value is valid
     private static boolean checkDecimal(String value)
@@ -267,21 +252,14 @@ public class Function
     }
 
     //* Convert Value to all other types and make Number object
-    public static void convertNumber(String value, Number.Type valueType)
-    {
-        //! Ignore this for it is for testing
-        System.out.println("Decimal To Binary: " + DecimalToBinary(value));
-        System.out.println("Decimal To Binary To Hex: " + BinaryToHex(DecimalToBinary(value)));
-        System.out.println("Decimal To Binary To Hex To Binary: " + HexToBinary(BinaryToHex(DecimalToBinary(value))));
-        // System.out.println("Decimal To Binary To Hex To Binary To Decimal: " + BinaryToDecimal(HexToBinary(BinaryToHex(DecimalToBinary(value)))));
-    }
+    public static void convertNumber(String value, Number.Type valueType) {}
 
     // Get the number base type
     // Valid Type also checks if the 
     // Value is in the right base
     public static Number.Type validType(String value, String valueType)
     {
-        // If the value type is Decimal
+        // If the value type is Decimal (10)
         if (valueType.equalsIgnoreCase("DEC") || valueType.equalsIgnoreCase("DECIMAL") || valueType.equalsIgnoreCase("10"))
         {
             if (checkDecimal(value))
@@ -289,14 +267,10 @@ public class Function
                 // Check if value follows the base
                 return Number.Type.DECIMAL;
             }
-            else
-            {
-                // Else raise a error
-                setError("\nERROR VALUE : " + value + " is not in " + Number.Type.DECIMAL + "\n");
-                return null;
-            }
+            // Else raise a error
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.DECIMAL + "\n");
         }
-        // If the value type is Hexadecimal
+        // If the value type is Hexadecimal (16)
         else if (valueType.equalsIgnoreCase("HEX") || valueType.equalsIgnoreCase("HEXADECIMAL") || valueType.equalsIgnoreCase("16"))
         {
             if (checkHex(value))
@@ -304,14 +278,10 @@ public class Function
                 // Check if value follows the base
                 return Number.Type.HEX;
             }
-            else
-            {
-                // Else raise a error
-                setError("\nERROR VALUE : " + value + " is not in " + Number.Type.HEX + "\n");
-                return null;
-            }
+            // Else raise a error
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.HEX + "\n");
         }
-        // If the value type is Binary
+        // If the value type is Binary (2)
         else if (valueType.equalsIgnoreCase("BIN") || valueType.equalsIgnoreCase("BINARY") || valueType.equalsIgnoreCase("2"))
         {
             if (checkBinary(value))
@@ -319,18 +289,10 @@ public class Function
                 // Check if value follows the base
                 return Number.Type.BINARY;
             }
-            else
-            {
-                // Else raise a error
-                setError("\nERROR VALUE : " + value + " is not in " + Number.Type.BINARY + "\n");
-                return null;
-            }
-        }
-        else
-        {
             // Else raise a error
-            setError("\nERROR TYPE : " + valueType + " is not a real type!" + "\n");
-            return null;
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.BINARY + "\n");
         }
+        // Else raise a error
+        throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 }
