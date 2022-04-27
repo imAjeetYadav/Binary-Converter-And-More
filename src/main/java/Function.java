@@ -8,8 +8,7 @@ public class Function
     // Array List to store history of numbers
     private final ArrayList<Number> history = new ArrayList<Number>();
 
-    // HashMap to store all possible values of letters in a Hex number
-    // private static final HashMap<String, Integer> hexValues = new HashMap<String, Integer>();
+    // Map to store all possible values of letters in a Hex number
     private static final Map<String, Integer> hexValues = Map.of(
             "A",10,
             "B",11,
@@ -47,11 +46,7 @@ public class Function
         // Check if every char is a number or hex letter
         for (int index = 0; index < value.length(); index++)
         {
-            if (Character.isDigit(value.charAt(index)) || hexValues.containsKey(""+value.charAt(index)))
-            {
-                continue;
-            }
-            else
+            if (!Character.isDigit(value.charAt(index)) || !hexValues.containsKey(""+value.charAt(index)))
             {
                 return false; // Value at index is not number or hex letter
             }
@@ -64,17 +59,13 @@ public class Function
     {
         try
         {
-            // Try converting the value into a integer
+            // Try converting the value into an integer
             Integer.parseInt(value);
 
             // Check if every char is a 1 or 0
             for (int index = 0; index < value.length(); index++)
             {
-                if (value.charAt(index) == '1' || value.charAt(index) == '0')
-                {
-                    continue;
-                }
-                else
+                if (value.charAt(index) != '1' && value.charAt(index) != '0')
                 {
                     return false; // Value at index is not a 1 or 0
                 }
@@ -83,33 +74,39 @@ public class Function
         }
         catch(Exception e)
         {
-            // If the value can't be converted to a integer
+            // If the value can't be converted to an integer
             return false;
         }
     }
 
-    //? Convert from decimal to binary
-    // TODO
+    // Convert from Decimal to Binary
     public static String DecimalToBinary(String value)
     {
-        // If the value is 0 return nothing
-        if (value.length() == 0 || Integer.parseInt(value) == 0)
+        // Variables to be used later
+        String binary = "";
+        int num = Integer.parseInt(value);
+
+        // If value is empty or 0 return accordingly
+        if (value.equals("0") || value.equals("")) {return "0000";}
+
+        while (num != 0) // When the number is 0 we've divided enough
         {
-            return "";
+            // Simple decimal to binary algorithm
+            binary = num%2 + binary; // Insert backwards
+            num = num/2;
         }
-        // If the value divided by two has no floating point add 0
-        else if ((Double.parseDouble(value) % 2) == 0)
-        {   
-            return DecimalToBinary(""+(int)(Double.parseDouble(value) / 2)) + "0";
-        } 
-        // If the value divided by two has a floating point add 1
-        else
+
+        // This is to maintain we send each binary in groups of 4.
+        // Very important later for hex
+        for (int i = 0; i < binary.length()%4; i++)
         {
-            return DecimalToBinary(""+(int)(Double.parseDouble(value) / 2)) + "1";
+            binary = "0" + binary;
         }
+
+        return binary;
     }
 
-    //? Convert from decimal to hex
+    // Convert from Decimal to Hex
     // TODO
     public static void DecimalToHex(String value)
     {
@@ -120,54 +117,27 @@ public class Function
     public static String HexToBinary(String value)
     {
         // If this is the last time to recurse Hex
-        if (value.length() == 1)
+        if (value.length() == 0) {return "";}
+        // Try converting first character to an integer
+        try
         {
-            // Try converting first character to a integer
-            try
-            {
-                // Convert character to binary through Decimal
-                String binary = DecimalToBinary(""+Integer.parseInt(value.substring(0,1)));
-                int binary_length = binary.length(); // Since every 0 increases length
+            // Convert first character to binary through Decimal
+            String binary = DecimalToBinary(""+Integer.parseInt(""+value.charAt(0)));
+            int binary_length = binary.length(); // Since every 0 increases length
 
-                // Add extra 0's to express number as 4 characters long
-                for (int num = 0; num < 4-binary_length; num++)
-                {
-                    binary = "0" + binary;
-                }
-
-                // Return just number
-                System.out.println(binary);
-                return (binary);
-            }
-            catch (Exception e)
+            // Add extra 0's to express number as a 4 character long version
+            for (int num = 0; num < 4-binary_length; num++)
             {
-                // If error arose, find letter to express character
-                return (DecimalToBinary(""+hexValues.get(value.substring(0,1))));
+                binary = "X" + binary;
             }
+
+            // Return binary and HexToBinary of rest of value
+            return (binary + HexToBinary(value.substring(1)));
         }
-        else
+        // If error arose, find letter to express character
+        catch (NumberFormatException error)
         {
-            // Try converting first character to a integer
-            try
-            {
-                // Convert first character to binary through Decimal
-                String binary = DecimalToBinary(""+Integer.parseInt(value.substring(0,1)));
-                int binary_length = binary.length(); // Since every 0 increases length
-
-                // Add extra 0's to express number as 4 characters long
-                for (int num = 0; num < 4-binary_length; num++)
-                {
-                    binary = "0" + binary;
-                }
-
-                // Return binary and HexToBinary of rest of value
-                return (binary + HexToBinary(value.substring(1)));
-            }
-            // If error arose, find letter to express character
-            catch (Exception e)
-            {
-                return (DecimalToBinary(""+hexValues.get(value.substring(0,1)))) + HexToBinary(value.substring(1));
-            }
+            return (DecimalToBinary(""+hexValues.get(""+value.charAt(0)))) + HexToBinary(value.substring(1));
         }
     }
 
