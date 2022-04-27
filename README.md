@@ -60,4 +60,4 @@ more if you'd like using JUnit.
 
 ## Credits
 
-Jupiter , Maven , JUnit 5.8.2 
+Jupiter JUnit 5.8.2 
