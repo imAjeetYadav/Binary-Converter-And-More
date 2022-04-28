@@ -49,8 +49,20 @@ and typing in the commands.
 
 This is documentation saved for myself to better organize on what functions are currently working
 or being developed:
+
 - DecimalToBinary
+- DecimalToHex
 - HexToDecimal
+- HexToBinary
+- BinaryToDecimal
+- BinaryToHex
+
+TODO
+- BinaryValid
+- HexValid
+- DecimalValid
+- validType
+- convertNumbers
 
 ## Tests
 

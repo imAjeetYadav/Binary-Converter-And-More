@@ -29,7 +29,7 @@ public class Interface
 
                 // Get the value of the number
                 System.out.println("\nWhat is the value?");
-                value = scanner.nextLine();
+                value = scanner.nextLine().toUpperCase();
 
                 // Get the value type as a string and convert it to Type
                 // validType also checks if value is in valueType

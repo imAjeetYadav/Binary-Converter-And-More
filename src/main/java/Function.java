@@ -18,7 +18,11 @@ public class Function
             "F",15
     );
 
-    // Check if the decimal value is valid
+    /**
+     * Check if the Decimal value is valid
+     * @param value Given Decimal value to check
+     * @return Boolean if the value is in Decimal
+     */
     private static boolean checkDecimal(String value)
     {
         try
@@ -37,7 +41,11 @@ public class Function
         }
     }
 
-    // Check if the hex value is valid
+    /**
+     * Check if the hex value is valid
+     * @param value Given Hex value to check
+     * @return Boolean if the value is in Hex
+     */
     private static boolean checkHex(String value)
     {
         // Convert all values to uppercase
@@ -54,7 +62,11 @@ public class Function
         return value.length()>0; // All characters passed
     }
 
-    // Check if the binary value is valid
+    /**
+     * Check if the binary value is valid
+     * @param value Given Binary value to check
+     * @return Boolean if the value is in Binary
+     */
     private static boolean checkBinary(String value)
     {
         try
@@ -79,12 +91,16 @@ public class Function
         }
     }
 
-    // Convert from Decimal to Binary
+    /**
+     * Convert value given from Base Decimal to Base Binary
+     * @param value Value that will be converted
+     * @return String representation of the binary value
+     */
     public static String DecimalToBinary(String value)
     {
         // Variables to be used later
         String binary = "";
-        int num = Integer.parseInt(value);
+        long num = Long.parseLong(value);
 
         // If value is empty or 0 return accordingly
         if (value.equals("0") || value.equals("")) {return "0000";}
@@ -106,28 +122,61 @@ public class Function
         return binary;
     }
 
-    // Convert from Decimal to Hex
-    // TODO
-    public static void DecimalToHex(String value)
+    /**
+     * Convert value given from Base Decimal to Base Hex
+     * @param value Value that will be converted
+     * @return String representation of the hex value
+     */
+    public static String DecimalToHex(String value)
     {
-        System.out.println(""+null);
+
+        // Check if the value is just '0' and return if it is
+        if (value.equalsIgnoreCase("0")) {
+            return value;
+        }
+
+        long num = Long.parseLong(value); // Parse long for larger number
+        String hex = "";
+
+        // Conversion algorithm while num is not 0
+        while (num != 0) {
+
+            // The character we have to add to the start of Hex
+            int addChar = (int)(16 * (((double) num / 16) - (num / 16)));
+
+            if (addChar > 9) { // If we need a letter rerepsentation
+
+                // Done with Java Char Casting
+                hex = (char)(addChar+55) + hex;
+
+            } else { // We can just add the number directly
+
+                hex = addChar + hex;
+            }
+
+            num = num/16; // Update num
+        }
+        // Return the Hex representation
+        return hex;
     }
 
-    //? Convert from hex to binary
-    public static String HexToBinary(String value)
-    {
+    /**
+     * Convert value given from Base Hex to Base Binary
+     * @param value Value that will be converted
+     * @return String representation of the binary value
+     * NOTICE: Will always return a value of length divisible by 4!
+     */
+    public static String HexToBinary(String value) {
         // If this is the last time to recurse Hex
         if (value.length() == 0) {return "";}
         // Try converting first character to an integer
-        try
-        {
+        try {
             // Convert first character to binary through Decimal
             String binary = DecimalToBinary(""+Integer.parseInt(""+value.charAt(0)));
             int binary_length = binary.length(); // Since every 0 increases length
 
             // Add extra 0's to express number as a 4 character long version
-            for (int num = 0; num < 4-binary_length; num++)
-            {
+            for (int num = 0; num < 4-binary_length; num++) {
                 binary = "X" + binary;
             }
 
@@ -135,46 +184,44 @@ public class Function
             return (binary + HexToBinary(value.substring(1)));
         }
         // If error arose, find letter to express character
-        catch (NumberFormatException error)
-        {
+        catch (NumberFormatException error) {
             return (DecimalToBinary(""+hexValues.get(""+value.charAt(0)))) + HexToBinary(value.substring(1));
         }
     }
 
-    //? Convert from hex to decimal
-    // TODO
-    public static String HexToDecimal(String value)
-    {
+    /**
+     * Convert value given from Base Hex to Base Decimal
+     * @param value Value that will be converted
+     * @return String representation of the decimal value
+     */
+    public static String HexToDecimal(String value) {
         // Add the value of each binary digit
         int sum = 0;
 
         // Loop through each digit
-        for (int index = 0; index < value.length(); index++)
-        {
+        for (int index = 0; index < value.length(); index++) {
             // Add it to the sum using their significant figure
             // First digit most significant so highest power
             // If the value can't be converted into an integer
             // Find the value of the letter in hexValues
-            try
-            {
+            try {
                 sum += Integer.parseInt(""+value.charAt(index)) * (Math.pow(16, (value.length() - index - 1)));   
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 sum += hexValues.get(""+value.charAt(index)) * (Math.pow(16, (value.length() - index - 1)));
             }
         }
-
+        // Return the Decimal Representation
         return ""+sum;
     }
 
-    //? Convert from binary to decimal
-    // TODO
-    public static String BinaryToDecimal(String value)
-    {
+    /**
+     * Convert value given from Base Binary to Base Decimal
+     * @param value Value that will be converted
+     * @return String representation of the decimal value
+     */
+    public static String BinaryToDecimal(String value) {
         // If the value is nothing not zero
-        if (value.length() == 0)
-        {
+        if (value.length() == 0) {
             return "";
         }
 
@@ -182,60 +229,57 @@ public class Function
         int sum = 0;
 
         // Loop through each digit
-        for (int index = 0; index < value.length(); index++)
-        {
+        for (int index = 0; index < value.length(); index++) {
             // Add it to the sum using their significant figure
             // First digit most significant so highest power
             sum += Integer.parseInt(""+value.charAt(index)) * (Math.pow(2, (value.length() - index - 1)));
         }
-
+        // Return the Decimal Representation
         return ""+sum;
     }
 
-    //? Convert from binary to hex
-    // TODO
-    public static String BinaryToHex(String value)
-    {
+    /**
+     * Convert value given from Base Binary to Base Hex
+     * @param value Value that will be converted
+     * @return String representation of the hex value
+     */
+    public static String BinaryToHex(String value) {
         // If the length is 4 it can be converted directly from binary
-        if (value.length() >= 4)
-        {
+        if (value.length() >= 4) {
             // bitSum is equal to the last 4 digits converted to a number
             int bitSum = Integer.parseInt(BinaryToDecimal(value.substring(value.length()-4, value.length())));
 
             // If bitSum can be expressed as a decimal
-            if (bitSum <= 9)
-            {
+            if (bitSum <= 9) {
                 // Express it as a decimal
                 return BinaryToHex(value.substring(0, value.length()-4)) + bitSum;
             }
-            else
-            {
+            else {
                 // Look for a letter to express it
-                for (String key : hexValues.keySet())
-                {
-                    if (hexValues.get(key) == bitSum)
-                    {
+                for (String key : hexValues.keySet()) {
+                    if (hexValues.get(key) == bitSum) {
                         // Express it as found letter
                         return BinaryToHex(value.substring(0, value.length()-4)) + key;
                     }
                 }
             }
         }
-
+        // Return the Decimal Representation
         return BinaryToDecimal(value);
     }
 
-    // Get the number base type
-    // Valid Type also checks if the 
-    // Value is in the right base
-    // TODO
-    public static Number.Type validType(String value, String valueType)
-    {
+    /**
+     * Get the number base type by checking Valid Type is a real
+     * Base and Value is in the Right Base
+     * @param value Value that should be in said valueType base
+     * @param valueType ValueTyp Base to convert to a Number Type
+     * @return Number Type version of the String given
+     */
+    public static Number.Type validType(String value, String valueType) {
         // If the value type is Decimal (10)
-        if (valueType.equalsIgnoreCase("DEC") || valueType.equalsIgnoreCase("DECIMAL") || valueType.equalsIgnoreCase("10"))
-        {
-            if (checkDecimal(value))
-            {
+        if (valueType.equalsIgnoreCase("DEC") || valueType.equalsIgnoreCase("DECIMAL")
+                || valueType.equalsIgnoreCase("10")) {
+            if (checkDecimal(value)) {
                 // Check if value follows the base
                 return Number.Type.DECIMAL;
             }
@@ -243,10 +287,9 @@ public class Function
             throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.DECIMAL + "\n");
         }
         // If the value type is Hexadecimal (16)
-        else if (valueType.equalsIgnoreCase("HEX") || valueType.equalsIgnoreCase("HEXADECIMAL") || valueType.equalsIgnoreCase("16"))
-        {
-            if (checkHex(value))
-            {
+        else if (valueType.equalsIgnoreCase("HEX") || valueType.equalsIgnoreCase("HEXADECIMAL")
+                || valueType.equalsIgnoreCase("16")) {
+            if (checkHex(value)) {
                 // Check if value follows the base
                 return Number.Type.HEX;
             }
@@ -254,10 +297,9 @@ public class Function
             throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.HEX + "\n");
         }
         // If the value type is Binary (2)
-        else if (valueType.equalsIgnoreCase("BIN") || valueType.equalsIgnoreCase("BINARY") || valueType.equalsIgnoreCase("2"))
-        {
-            if (checkBinary(value))
-            {
+        else if (valueType.equalsIgnoreCase("BIN") || valueType.equalsIgnoreCase("BINARY")
+                || valueType.equalsIgnoreCase("2")) {
+            if (checkBinary(value)) {
                 // Check if value follows the base
                 return Number.Type.BINARY;
             }
