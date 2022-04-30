@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.lang.Math;
 import java.util.Map;
 
 public class Function 
 {
     // Array List to store history of numbers
-    private final ArrayList<Number> history = new ArrayList<Number>();
+    private final ArrayList<loadedNumber> history = new ArrayList<loadedNumber>();
 
     // Map to store all possible values of letters in a Hex number
     private static final Map<String, Integer> hexValues = Map.of(
@@ -23,12 +22,12 @@ public class Function
      * @param value Given Decimal value to check
      * @return Boolean if the value is in Decimal
      */
-    private static boolean checkDecimal(String value)
+    public static boolean checkDecimal(String value)
     {
         try
         {
             // Try converting the value into a integer
-            if (Integer.parseInt(value) >= 0){
+            if (Long.parseLong(value) >= 0){
                 return true;
             }
             System.out.println("Currently Does Not Support Signed!");
@@ -46,15 +45,12 @@ public class Function
      * @param value Given Hex value to check
      * @return Boolean if the value is in Hex
      */
-    private static boolean checkHex(String value)
+    public static boolean checkHex(String value)
     {
-        // Convert all values to uppercase
-        value = value.toUpperCase();
-
         // Check if every char is a number or hex letter
         for (int index = 0; index < value.length(); index++)
         {
-            if (!Character.isDigit(value.charAt(index)) || !hexValues.containsKey(""+value.charAt(index)))
+            if (!Character.isDigit(value.charAt(index)) && !hexValues.containsKey(""+value.charAt(index)))
             {
                 return false; // Value at index is not number or hex letter
             }
@@ -67,28 +63,17 @@ public class Function
      * @param value Given Binary value to check
      * @return Boolean if the value is in Binary
      */
-    private static boolean checkBinary(String value)
+    public static boolean checkBinary(String value)
     {
-        try
+        // Check if every char is a 1 or 0
+        for (int index = 0; index < value.length(); index++)
         {
-            // Try converting the value into an integer
-            Integer.parseInt(value);
-
-            // Check if every char is a 1 or 0
-            for (int index = 0; index < value.length(); index++)
+            if (value.charAt(index) != '1' && value.charAt(index) != '0')
             {
-                if (value.charAt(index) != '1' && value.charAt(index) != '0')
-                {
-                    return false; // Value at index is not a 1 or 0
-                }
+                return false; // Value at index is not a 1 or 0
             }
-            return true; // Passed all tests
         }
-        catch(Exception e)
-        {
-            // If the value can't be converted to an integer
-            return false;
-        }
+        return true; // Passed all tests
     }
 
     /**
@@ -275,40 +260,40 @@ public class Function
      * @param valueType ValueTyp Base to convert to a Number Type
      * @return Number Type version of the String given
      */
-    public static Number.Type validType(String value, String valueType) {
+    public static loadedNumber.Type validType(String value, String valueType) {
         // If the value type is Decimal (10)
         if (valueType.equalsIgnoreCase("DEC") || valueType.equalsIgnoreCase("DECIMAL")
                 || valueType.equalsIgnoreCase("10")) {
             if (checkDecimal(value)) {
                 // Check if value follows the base
-                return Number.Type.DECIMAL;
+                return loadedNumber.Type.DECIMAL;
             }
             // Else raise a error
-            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.DECIMAL + "\n");
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + loadedNumber.Type.DECIMAL + "\n");
         }
         // If the value type is Hexadecimal (16)
         else if (valueType.equalsIgnoreCase("HEX") || valueType.equalsIgnoreCase("HEXADECIMAL")
                 || valueType.equalsIgnoreCase("16")) {
             if (checkHex(value)) {
                 // Check if value follows the base
-                return Number.Type.HEX;
+                return loadedNumber.Type.HEX;
             }
             // Else raise a error
-            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.HEX + "\n");
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + loadedNumber.Type.HEX + "\n");
         }
         // If the value type is Binary (2)
         else if (valueType.equalsIgnoreCase("BIN") || valueType.equalsIgnoreCase("BINARY")
                 || valueType.equalsIgnoreCase("2")) {
             if (checkBinary(value)) {
                 // Check if value follows the base
-                return Number.Type.BINARY;
+                return loadedNumber.Type.BINARY;
             }
             // Else raise a error
-            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + Number.Type.BINARY + "\n");
+            throw new Exceptions.InvalidValueException("\nERROR VALUE : " + value + " is not in " + loadedNumber.Type.BINARY + "\n");
         }
         // Else raise a error
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 
-    public static void convertNumber(String value, Number.Type valueType) {}
+    public static void convertNumber(String value, loadedNumber.Type valueType) {}
 }

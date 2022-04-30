@@ -56,12 +56,12 @@ or being developed:
 - HexToBinary
 - BinaryToDecimal
 - BinaryToHex
-
-TODO
 - BinaryValid
 - HexValid
 - DecimalValid
 - validType
+
+TODO
 - convertNumbers
 
 ## Tests

@@ -1,5 +1,5 @@
 
-public class Number
+public class loadedNumber
 {
     // Type of Numbers
     public static enum Type {DECIMAL, HEX, BINARY}
@@ -7,18 +7,21 @@ public class Number
     private String binValue;
     private String decValue;
     private String hexValue;
-    private Type valueType;
 
-    public Number(String value, Type valueType)
+    public loadedNumber(String value, Type valueType)
     {
-        this.valueType = valueType;
-
         if (valueType.equals(Type.DECIMAL)) {
             decValue = value;
+            hexValue = Function.DecimalToHex(value);
+            binValue = Function.DecimalToBinary(value);
         } else if (valueType.equals(Type.HEX)) {
             hexValue = value;
+            decValue = Function.HexToDecimal(value);
+            binValue = Function.HexToBinary(value);
         } else if (valueType.equals(Type.BINARY)){
             binValue = value;
+            decValue = Function.BinaryToDecimal(value);
+            hexValue = Function.BinaryToHex(value);
         }
     }
     
@@ -58,22 +61,32 @@ public class Number
         this.hexValue = value;
     }
 
-    // Get the base of the number
-    public Type getBase() {
-        return this.valueType;
-    }
-
-    // Set the base of the number
-    public void setBase(Type valueType) {
-        this.valueType = valueType;
-    }
-
     // To String Method
     public String toString()
     {
         return 
-        "Decimal Value: " + this.decValue +
-        "Binary Value: " + this.binValue + 
-        "Hex Value: " + this.hexValue;
+        "Decimal (10) Value: " + this.decValue +
+        "\nBinary  (2)  Value: " + this.binValue +
+        "\nHex     (16) Value: " + this.hexValue;
+    }
+
+    /**
+     * See if two "Numbers" objects are the same
+     * @param other Object that it is being compared to
+     * @return Boolean if objects are the same
+     */
+    public boolean equals(Object other) {
+        loadedNumber num;
+
+        if (other instanceof loadedNumber) {
+            num = (loadedNumber) other;
+        } else {
+            return false;
+        }
+
+        // Every "Number" has a Decimal value and the
+        // rest will be equal if the Decimal number is
+        // The same
+        return this.decValue.equals(num.getDecValue());
     }
 }
