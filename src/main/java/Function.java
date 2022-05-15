@@ -2,10 +2,24 @@ import java.util.ArrayList;
 import java.lang.Math;
 import java.util.Map;
 
+/**
+ * @author Teo
+ * This Java file is the main function of the
+ * program. It houses the methods to check if
+ * inputted values are valid, methods to convert
+ * between Dec, Hex, and Bin. The main methods such
+ * as ConvertNumber and LoadHistory are meant to
+ * run the right methods depending on the User Input.
+ * The conversion methods are used in the loadedNumber
+ * constructor to properly create a Number with all
+ * three types of value conversions. The last part is the
+ * ARC Assembly implementation that converts a 32-char long
+ * Binary value into ARC Commands.
+ */
 public class Function 
 {
     // Array List to store history of numbers
-    private final ArrayList<loadedNumber> history = new ArrayList<loadedNumber>();
+    private static final ArrayList<loadedNumber> history = new ArrayList<>();
 
     // Map to store all possible values of letters in a Hex number
     private static final Map<String, Integer> hexValues = Map.of(
@@ -22,20 +36,16 @@ public class Function
      * @param value Given Decimal value to check
      * @return Boolean if the value is in Decimal
      */
-    public static boolean checkDecimal(String value)
-    {
-        try
-        {
-            // Try converting the value into a integer
+    public static boolean checkDecimal(String value) {
+        try {
+            // Try converting the value into an integer
             if (Long.parseLong(value) >= 0){
                 return true;
             }
             System.out.println("Currently Does Not Support Signed!");
             return false;
-        }
-        catch(Exception e)
-        {
-            // If the value can't be converted to a integer
+        } catch(Exception e) {
+            // If the value can't be converted to an integer
             return false;
         }
     }
@@ -45,13 +55,10 @@ public class Function
      * @param value Given Hex value to check
      * @return Boolean if the value is in Hex
      */
-    public static boolean checkHex(String value)
-    {
+    public static boolean checkHex(String value) {
         // Check if every char is a number or hex letter
-        for (int index = 0; index < value.length(); index++)
-        {
-            if (!Character.isDigit(value.charAt(index)) && !hexValues.containsKey(""+value.charAt(index)))
-            {
+        for (int index = 0; index < value.length(); index++) {
+            if (!Character.isDigit(value.charAt(index)) && !hexValues.containsKey(""+value.charAt(index))) {
                 return false; // Value at index is not number or hex letter
             }
         }
@@ -63,13 +70,10 @@ public class Function
      * @param value Given Binary value to check
      * @return Boolean if the value is in Binary
      */
-    public static boolean checkBinary(String value)
-    {
+    public static boolean checkBinary(String value) {
         // Check if every char is a 1 or 0
-        for (int index = 0; index < value.length(); index++)
-        {
-            if (value.charAt(index) != '1' && value.charAt(index) != '0')
-            {
+        for (int index = 0; index < value.length(); index++) {
+            if (value.charAt(index) != '1' && value.charAt(index) != '0') {
                 return false; // Value at index is not a 1 or 0
             }
         }
@@ -81,30 +85,26 @@ public class Function
      * @param value Value that will be converted
      * @return String representation of the binary value
      */
-    public static String DecimalToBinary(String value)
-    {
+    public static String DecimalToBinary(String value) {
         // Variables to be used later
-        String binary = "";
+        StringBuilder binary = new StringBuilder();
         long num = Long.parseLong(value);
 
         // If value is empty or 0 return accordingly
-        if (value.equals("0") || value.equals("")) {return "0000";}
+        if (value.equals("0") || value.equals("")) { return "0000"; }
 
-        while (num != 0) // When the number is 0 we've divided enough
-        {
+        while (num != 0) { // When the number is 0 we've divided enough
             // Simple decimal to binary algorithm
-            binary = num%2 + binary; // Insert backwards
+            binary.insert(0, num % 2); // Insert backwards
             num = num/2;
         }
 
         // This is to maintain we send each binary in groups of 4.
         // Very important later for hex
-        for (int i = 0; i < binary.length()%4; i++)
-        {
-            binary = "0" + binary;
+        for (int i = 0; i < binary.length()%4; i++) {
+            binary.insert(0, "0");
         }
-
-        return binary;
+        return binary.toString();
     }
 
     /**
@@ -112,37 +112,31 @@ public class Function
      * @param value Value that will be converted
      * @return String representation of the hex value
      */
-    public static String DecimalToHex(String value)
-    {
-
+    public static String DecimalToHex(String value) {
         // Check if the value is just '0' and return if it is
         if (value.equalsIgnoreCase("0")) {
             return value;
         }
 
         long num = Long.parseLong(value); // Parse long for larger number
-        String hex = "";
+        StringBuilder hex = new StringBuilder();
 
         // Conversion algorithm while num is not 0
         while (num != 0) {
-
             // The character we have to add to the start of Hex
             int addChar = (int)(16 * (((double) num / 16) - (num / 16)));
 
-            if (addChar > 9) { // If we need a letter rerepsentation
-
+            if (addChar > 9) { // If we need a letter representation
                 // Done with Java Char Casting
-                hex = (char)(addChar+55) + hex;
-
+                hex.insert(0, (char) (addChar + 55));
             } else { // We can just add the number directly
-
-                hex = addChar + hex;
+                hex.insert(0, addChar);
             }
 
             num = num/16; // Update num
         }
         // Return the Hex representation
-        return hex;
+        return hex.toString();
     }
 
     /**
@@ -157,12 +151,12 @@ public class Function
         // Try converting first character to an integer
         try {
             // Convert first character to binary through Decimal
-            String binary = DecimalToBinary(""+Integer.parseInt(""+value.charAt(0)));
+            StringBuilder binary = new StringBuilder(DecimalToBinary("" + Integer.parseInt("" + value.charAt(0))));
             int binary_length = binary.length(); // Since every 0 increases length
 
             // Add extra 0's to express number as a 4 character long version
             for (int num = 0; num < 4-binary_length; num++) {
-                binary = "X" + binary;
+                binary.insert(0, "X");
             }
 
             // Return binary and HexToBinary of rest of value
@@ -186,13 +180,14 @@ public class Function
         // Loop through each digit
         for (int index = 0; index < value.length(); index++) {
             // Add it to the sum using their significant figure
-            // First digit most significant so highest power
+            // First digit most significant so the highest power
             // If the value can't be converted into an integer
             // Find the value of the letter in hexValues
+            double pow = Math.pow(16, (value.length() - index - 1));
             try {
-                sum += Integer.parseInt(""+value.charAt(index)) * (Math.pow(16, (value.length() - index - 1)));   
+                sum += Integer.parseInt(""+value.charAt(index)) * pow;
             } catch (Exception e) {
-                sum += hexValues.get(""+value.charAt(index)) * (Math.pow(16, (value.length() - index - 1)));
+                sum += hexValues.get(""+value.charAt(index)) * pow;
             }
         }
         // Return the Decimal Representation
@@ -216,7 +211,7 @@ public class Function
         // Loop through each digit
         for (int index = 0; index < value.length(); index++) {
             // Add it to the sum using their significant figure
-            // First digit most significant so highest power
+            // First digit most significant so the highest power
             sum += Integer.parseInt(""+value.charAt(index)) * (Math.pow(2, (value.length() - index - 1)));
         }
         // Return the Decimal Representation
@@ -232,19 +227,20 @@ public class Function
         // If the length is 4 it can be converted directly from binary
         if (value.length() >= 4) {
             // bitSum is equal to the last 4 digits converted to a number
-            int bitSum = Integer.parseInt(BinaryToDecimal(value.substring(value.length()-4, value.length())));
+            int bitSum = Integer.parseInt(BinaryToDecimal(value.substring(value.length()-4)));
 
             // If bitSum can be expressed as a decimal
+            String substring = value.substring(0, value.length() - 4);
             if (bitSum <= 9) {
                 // Express it as a decimal
-                return BinaryToHex(value.substring(0, value.length()-4)) + bitSum;
+                return BinaryToHex(substring) + bitSum;
             }
             else {
                 // Look for a letter to express it
                 for (String key : hexValues.keySet()) {
                     if (hexValues.get(key) == bitSum) {
                         // Express it as found letter
-                        return BinaryToHex(value.substring(0, value.length()-4)) + key;
+                        return BinaryToHex(substring) + key;
                     }
                 }
             }
@@ -295,5 +291,35 @@ public class Function
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 
-    public static void convertNumber(String value, loadedNumber.Type valueType) {}
+    public static String convertToAssembly(String value) {
+
+        if (checkBinary(value)) {
+            if (value.length() == 31) {
+                
+            }
+            throw new Exceptions.InvalidValueException("This value is not long enough to convert! (32 chars Needed)");
+        }
+        throw new Exceptions.InvalidValueException("This value is not binary!");
+    }
+
+    /**
+     * Take a passed Value and Base and create
+     * a loaded Number
+     * @param value Value Magnitude
+     * @param valueType Base of the Value
+     */
+    public static void convertNumber(String value, loadedNumber.Type valueType) {
+        history.add(new loadedNumber(value,valueType));
+        System.out.println(history.get(history.size()-1));
+    }
+
+    /**
+     * Print out the history of all
+     * Numbers converted
+     */
+    public static void loadHistory() {
+        for (loadedNumber num : history) {
+            System.out.println(num.toString());
+        }
+    }
 }

@@ -8,8 +8,7 @@ public class Interface
 
         System.out.print(">"); // Make Console
 
-        while (true)
-        {
+        while (true) {
             String input = scanner.nextLine();
 
             // End Program
@@ -20,7 +19,6 @@ public class Interface
                 break;
             }
             // Number Conversion
-            // TODO
             else if (input.equalsIgnoreCase("CONVERT"))
             {
                 // Values to be used later
@@ -43,16 +41,14 @@ public class Interface
                 }
             }
             // Assembly Related Command
-            // TODO
             else if (input.equalsIgnoreCase("ASSEMBLY"))
             {
                 continue;
             }
             // Load input history
-            // TODO
             else if (input.equalsIgnoreCase("LOAD"))
             {
-                continue;
+                Function.loadHistory();
             }
             System.out.print(">");
         }
