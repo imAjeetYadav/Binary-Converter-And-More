@@ -291,13 +291,50 @@ public class Function
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 
-    public static String convertToAssembly(String value) {
+    public static String sethi(String value) {
+        switch(value.substring(7,10)) {
+            // BRANCH
+            case "010":
+                if (value.charAt(2) == '0') {
+                    return switch (value.substring(3, 7)) {
+                        case "0001" -> "BE " + BinaryToDecimal(value.substring(10));
+                        case "0101" -> "BCS " + BinaryToDecimal(value.substring(10));
+                        case "0110" -> "BNEG " + BinaryToDecimal(value.substring(10));
+                        case "0111" -> "BVS " + BinaryToDecimal(value.substring(10));
+                        case "1000" -> "BA " + BinaryToDecimal(value.substring(10));
+                        default -> throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+                    };
+                }
+                throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+            // SETHI
+            case "100":
+                return "SETHI 0x" + BinaryToHex(value.substring(10)) + ",%r" + BinaryToDecimal(value.substring(2,7));
+            default:
+                throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+        }
+    }
 
+    public static String convertToAssembly(String value) {
         if (checkBinary(value)) {
-            if (value.length() == 31) {
-                
+            if (value.length() == 32) {
+                switch(value.substring(0,2)) {
+                    // SETHI Format
+                    case "00":
+                        return sethi(value);
+                    // CALL Format
+                    case "01":
+                        break;
+                    // ARITHMETIC Format
+                    case "10":
+                        break;
+                    // MEMORY Format
+                    case "11":
+                        break;
+                    default:
+                        throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+                }
             }
-            throw new Exceptions.InvalidValueException("This value is not long enough to convert! (32 chars Needed)");
+            throw new Exceptions.InvalidValueException("This value is not the right size! (32 chars Needed)");
         }
         throw new Exceptions.InvalidValueException("This value is not binary!");
     }

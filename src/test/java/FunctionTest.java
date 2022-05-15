@@ -314,4 +314,16 @@ class FunctionTest {
     public void convertBinaryToHex4() {
         Assertions.assertEquals(Function.BinaryToHex("00101010101010111011"),"2AABB");
     }
+
+    // ARC Assembly
+
+    @Test
+    public void Branch0() {
+        Assertions.assertEquals(Function.convertToAssembly("00001010100000000000000000000101"),"BCS 5");
+    }
+
+    @Test
+    public void Sethi0() {
+        Assertions.assertEquals(Function.convertToAssembly("00000011001100000100111100010101"),"SETHI 0x304F15,%r1");
+    }
 }
