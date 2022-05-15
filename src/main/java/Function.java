@@ -421,10 +421,11 @@ public class Function
      * a loaded Number
      * @param value Value Magnitude
      * @param valueType Base of the Value
+     * @return Loaded Number Value Object
      */
-    public static void convertNumber(String value, loadedNumber.Type valueType) {
+    public static loadedNumber convertNumber(String value, loadedNumber.Type valueType) {
         history.add(new loadedNumber(value,valueType));
-        System.out.println(history.get(history.size()-1));
+        return history.get(history.size()-1);
     }
 
     /**
@@ -432,8 +433,10 @@ public class Function
      * Numbers converted
      */
     public static void loadHistory() {
-        for (loadedNumber num : history) {
-            System.out.println(num.toString());
+        for (int i = 0; i < history.size(); i++) {
+            System.out.println("Value Number #" + i+1);
+            System.out.println(history.get(i).toString() + "\n");
+
         }
     }
 }
