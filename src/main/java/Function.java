@@ -291,7 +291,12 @@ public class Function
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 
-    public static String sethi(String value) {
+    /**
+     * SETHI and BRANCH Format for a Value
+     * @param value Binary Value to be Converted to ARC
+     * @return ARC Assembly Code
+     */
+    public static String sethiBranch(String value) {
         switch(value.substring(7,10)) {
             // BRANCH
             case "010":
@@ -308,10 +313,49 @@ public class Function
                 throw new Exceptions.InvalidValueException("This value is not an ARC command!");
             // SETHI
             case "100":
-                return "SETHI 0x" + BinaryToHex(value.substring(10)) + ",%r" + BinaryToDecimal(value.substring(2,7));
+                return "SETHI 0x" + BinaryToHex(value.substring(10)) + ", %r" + BinaryToDecimal(value.substring(2,7));
             default:
                 throw new Exceptions.InvalidValueException("This value is not an ARC command!");
         }
+    }
+
+    /**
+     * CALL Format for a Value
+     * @param value Binary Value to be Converted to ARC
+     * @return ARC Assembly Code
+     */
+    public static String call(String value) {
+        return "CALL " + BinaryToDecimal(value.substring(2));
+    }
+
+    public static String arithmetic(String value) {
+        switch(value.substring(7,13)) {
+            // Add Complement
+            case "010000":
+                if (value.charAt(18) == '0') {
+
+                } else { // Then equals 1
+
+                }
+            // And Complement
+            case "010001":
+                break;
+            // Or Complement
+            case "010010":
+                break;
+            // Not Or Complement
+            case "010110":
+                break;
+            // Shift Right
+            case "100110":
+                break;
+            // Jump and Link
+            case "111000":
+                break;
+            default:
+                throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+        }
+        return null;
     }
 
     public static String convertToAssembly(String value) {
@@ -320,10 +364,10 @@ public class Function
                 switch(value.substring(0,2)) {
                     // SETHI Format
                     case "00":
-                        return sethi(value);
+                        return sethiBranch(value);
                     // CALL Format
                     case "01":
-                        break;
+                        return call(value);
                     // ARITHMETIC Format
                     case "10":
                         break;

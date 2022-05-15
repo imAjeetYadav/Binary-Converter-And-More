@@ -26,17 +26,17 @@ class FunctionTest {
 
     @Test
     public void validTypeCheck4() {
-        Assertions.assertThrows(Exceptions.InvalidValueException.class, () -> {Function.validType("123456789ABCDEF","BINARY");});
+        Assertions.assertThrows(Exceptions.InvalidValueException.class, () -> Function.validType("123456789ABCDEF","BINARY"));
     }
 
     @Test
     public void validTypeCheck5() {
-        Assertions.assertThrows(Exceptions.InvalidValueException.class, () -> {Function.validType("123456789ABCDEF","DECIMAL");});
+        Assertions.assertThrows(Exceptions.InvalidValueException.class, () -> Function.validType("123456789ABCDEF","DECIMAL"));
     }
 
     @Test
     public void validTypeCheck6() {
-        Assertions.assertThrows(Exceptions.InvalidBaseException.class, () -> {Function.validType("1","TEST");});
+        Assertions.assertThrows(Exceptions.InvalidBaseException.class, () -> Function.validType("1","TEST"));
     }
 
     // Check if it makes Number Object properly
@@ -324,6 +324,11 @@ class FunctionTest {
 
     @Test
     public void Sethi0() {
-        Assertions.assertEquals(Function.convertToAssembly("00000011001100000100111100010101"),"SETHI 0x304F15,%r1");
+        Assertions.assertEquals(Function.convertToAssembly("00000011001100000100111100010101"),"SETHI 0x304F15, %r1");
+    }
+
+    @Test
+    public void Call0() {
+        Assertions.assertEquals(Function.call("01000000000000000000000000011001"),"CALL 25");
     }
 }
