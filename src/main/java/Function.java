@@ -291,6 +291,12 @@ public class Function
         throw new Exceptions.InvalidBaseException("\nERROR TYPE : " + valueType + " is not a real / supported type!" + "\n");
     }
 
+    // Arc Assembly Information
+    // RD:     2,7
+    // RS1:    13,18
+    // RS2:    27
+    // SIMM13: 19
+
     /**
      * SETHI and BRANCH Format for a Value
      * @param value Binary Value to be Converted to ARC
@@ -328,6 +334,11 @@ public class Function
         return "CALL " + BinaryToDecimal(value.substring(2));
     }
 
+    /**
+     * ARITHMETIC Format for a Value
+     * @param value Binary Value to be Converted to ARC
+     * @return ARC Assembly Code
+     */
     public static String arithmetic(String value) {
         String op3 = switch (value.substring(7, 13)) {
             // Add Complement
@@ -353,25 +364,52 @@ public class Function
         }
     }
 
+    /**
+     * MEMORY Format for a Value
+     * @param value Binary Value to be Converted to ARC
+     * @return ARC Assembly Code
+     */
+    public static String memory(String value) {
+        switch (value.substring(7,13)) {
+            case "000000":
+                if (value.charAt(18) == '0') {
+                    return "LD [%r" + BinaryToDecimal(value.substring(13,18)) + "+%r"
+                            + BinaryToDecimal(value.substring(27))
+                            + "], %r" + BinaryToDecimal(value.substring(2,7));
+                } else { // Then it is SIMM13
+                    return "LD [%r" + BinaryToDecimal(value.substring(13,18)) + "+"
+                            + BinaryToDecimal(value.substring(19))
+                            + "], %r" + BinaryToDecimal(value.substring(2,7));
+                }
+            case "000100":
+                if (value.charAt(18) == '0') {
+                    return "ST %r" + BinaryToDecimal(value.substring(2,7)) + ", [%r"
+                            + BinaryToDecimal(value.substring(13,18))
+                            + "+%r" + BinaryToDecimal(value.substring(27)) + "]";
+                } else { // Then it is SIMM13
+                    return "ST %r" + BinaryToDecimal(value.substring(2,7)) + ", [%r"
+                            + BinaryToDecimal(value.substring(13,18))
+                            + "+" + BinaryToDecimal(value.substring(19)) + "]";
+                }
+            default:
+                throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+        }
+    }
+
     public static String convertToAssembly(String value) {
         if (checkBinary(value)) {
             if (value.length() == 32) {
-                switch(value.substring(0,2)) {
+                return switch (value.substring(0, 2)) {
                     // SETHI Format
-                    case "00":
-                        return sethiBranch(value);
+                    case "00" -> sethiBranch(value);
                     // CALL Format
-                    case "01":
-                        return call(value);
+                    case "01" -> call(value);
                     // ARITHMETIC Format
-                    case "10":
-                        return arithmetic(value);
+                    case "10" -> arithmetic(value);
                     // MEMORY Format
-                    case "11":
-                        break;
-                    default:
-                        throw new Exceptions.InvalidValueException("This value is not an ARC command!");
-                }
+                    case "11" -> memory(value);
+                    default -> throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+                };
             }
             throw new Exceptions.InvalidValueException("This value is not the right size! (32 chars Needed)");
         }

@@ -341,4 +341,14 @@ class FunctionTest {
     public void Arithmetic1() {
         Assertions.assertEquals(Function.convertToAssembly("10000110100100000100000000000010"),"ORCC %r1, %r2, %r3");
     }
+
+    @Test
+    public void Memory0() {
+        Assertions.assertEquals(Function.convertToAssembly("11000010000000000010100000010000"),"LD [%r0+2064], %r1");
+    }
+
+    @Test
+    public void Memory1() {
+        Assertions.assertEquals(Function.convertToAssembly("11000010001000000010100000010000"),"ST %r1, [%r0+2064]");
+    }
 }

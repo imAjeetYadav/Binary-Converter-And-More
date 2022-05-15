@@ -12,15 +12,13 @@ public class Interface
             String input = scanner.nextLine();
 
             // End Program
-            if (input.equalsIgnoreCase("QUIT"))
-            {
+            if (input.equalsIgnoreCase("QUIT")) {
                 System.out.println("See You Soon!");
                 scanner.close(); // To close program properly
                 break;
             }
             // Number Conversion
-            else if (input.equalsIgnoreCase("CONVERT"))
-            {
+            else if (input.equalsIgnoreCase("CONVERT")) {
                 // Values to be used later
                 String value;
                 String base;
@@ -41,9 +39,19 @@ public class Interface
                 }
             }
             // Assembly Related Command
-            else if (input.equalsIgnoreCase("ASSEMBLY"))
-            {
-                continue;
+            else if (input.equalsIgnoreCase("ASSEMBLY")) {
+                // Values to be used later
+                String value;
+
+                // Get the value of the number
+                System.out.println("\nWhat is the binary value?");
+                value = scanner.nextLine();
+
+                try {
+                    Function.convertToAssembly(value);
+                } catch (Exception error) {
+                    System.out.println(error.getMessage());
+                }
             }
             // Load input history
             else if (input.equalsIgnoreCase("LOAD"))
