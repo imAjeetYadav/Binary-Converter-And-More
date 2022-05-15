@@ -329,33 +329,28 @@ public class Function
     }
 
     public static String arithmetic(String value) {
-        switch(value.substring(7,13)) {
+        String op3 = switch (value.substring(7, 13)) {
             // Add Complement
-            case "010000":
-                if (value.charAt(18) == '0') {
-
-                } else { // Then equals 1
-
-                }
+            case "010000" -> "ADDCC";
             // And Complement
-            case "010001":
-                break;
+            case "010001" -> "ANDCC";
             // Or Complement
-            case "010010":
-                break;
+            case "010010" -> "ORCC";
             // Not Or Complement
-            case "010110":
-                break;
+            case "010110" -> "ORNCC";
             // Shift Right
-            case "100110":
-                break;
+            case "100110" -> "SRL";
             // Jump and Link
-            case "111000":
-                break;
-            default:
-                throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+            case "111000" -> "JMPL";
+            default -> throw new Exceptions.InvalidValueException("This value is not an ARC command!");
+        };
+        if (value.charAt(18) == '0') {
+            return op3 + " %r" + BinaryToDecimal(value.substring(13,18)) + ", %r"
+                    + BinaryToDecimal(value.substring(27)) + ", %r" + BinaryToDecimal(value.substring(2,7));
+        } else { // Then equals 1
+            return op3 + " %r" + BinaryToDecimal(value.substring(13,18)) + ", "
+                    + BinaryToDecimal(value.substring(19)) + ", %r" + BinaryToDecimal(value.substring(2,7));
         }
-        return null;
     }
 
     public static String convertToAssembly(String value) {
@@ -370,7 +365,7 @@ public class Function
                         return call(value);
                     // ARITHMETIC Format
                     case "10":
-                        break;
+                        return arithmetic(value);
                     // MEMORY Format
                     case "11":
                         break;

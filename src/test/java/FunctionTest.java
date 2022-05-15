@@ -329,6 +329,16 @@ class FunctionTest {
 
     @Test
     public void Call0() {
-        Assertions.assertEquals(Function.call("01000000000000000000000000011001"),"CALL 25");
+        Assertions.assertEquals(Function.convertToAssembly("01000000000000000000000000011001"),"CALL 25");
+    }
+
+    @Test
+    public void Arithmetic0() {
+        Assertions.assertEquals(Function.convertToAssembly("10000010100000000110000000000101"),"ADDCC %r1, 5, %r1");
+    }
+
+    @Test
+    public void Arithmetic1() {
+        Assertions.assertEquals(Function.convertToAssembly("10000110100100000100000000000010"),"ORCC %r1, %r2, %r3");
     }
 }
