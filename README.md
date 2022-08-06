@@ -60,8 +60,6 @@ or being developed:
 - HexValid
 - DecimalValid
 - validType
-
-TODO
 - convertNumbers
 - ARC Assembly Component
 
