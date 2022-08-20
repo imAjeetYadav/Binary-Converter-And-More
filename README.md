@@ -12,7 +12,7 @@ conversion method individually. I've only added a couple of tests but will add m
 there is no edge cases.
 
 I was planning on adding JSwing GUI library to the program, but I am still considering it. This is 
-definable not a long-term project I just wanted to use Java to make a simple conversion calculator
+not a long-term project I just wanted to use Java to make a simple conversion calculator
 with the addition of converting to Assembly ARC commands.
 
 ## License
@@ -35,7 +35,7 @@ just delete the FunctionTest.java file.
 ## Usage
 
 I did originally plan to make a GUI with Java Swing, but I do not think it is worth the time to 
-learn it. I am trying to experience in as many languages as possible so I would rather use my 
+learn it. I am trying to gain experience in as many languages as possible so I would rather use my 
 time self teaching other languages. Maybe one day when I have more free time I'll come back and 
 set up GUI for it. Therefore, the only way to use this program is by running it through your IDE
 and typing in the commands.
